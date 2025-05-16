@@ -1,23 +1,16 @@
 'use client';
-import HowToSlider from './components/HowToSlider';
-import Image from 'next/image';
-import { useLanguage } from './context/LanguageContext';
 
-export default function Home() {
+import Image from 'next/image';
+import { useLanguage } from '../context/LanguageContext';
+
+export default function AboutPage() {
   const { getImagePath } = useLanguage();
   
-  const defaultImages = {
-    home2: '/images/en/clipper-lighter-home-2.webp',
-    home3: '/images/en/clipper-lighter-home-3.webp',
-    home4: '/images/en/clipper-lighter-home-4.webp'
-  };
-
   return (
     <main className="pt-[72px]">
-      <HowToSlider />
       <div className="w-full">
         <Image
-          src={getImagePath('images.home.2' as const) || defaultImages.home2}
+          src={getImagePath('images.about.1' as const)}
           alt="Clipper Lighter Features"
           width={1920}
           height={1080}
@@ -30,7 +23,7 @@ export default function Home() {
       </div>
       <div className="w-full">
         <Image
-          src={getImagePath('images.home.3' as const) || defaultImages.home3}
+          src={getImagePath('images.about.2' as const)}
           alt="Clipper Lighter Features"
           width={1920}
           height={1080}
@@ -43,7 +36,7 @@ export default function Home() {
       </div>
       <div className="w-full">
         <Image
-          src={defaultImages.home4}
+          src={getImagePath('images.about.3' as const)}
           alt="Clipper Lighter Features"
           width={1920}
           height={1080}

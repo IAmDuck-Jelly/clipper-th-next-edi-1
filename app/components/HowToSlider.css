@@ -1,0 +1,176 @@
+.slider-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #FFD700; /* Red background */
+}
+
+.slider-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-slide.active {
+  opacity: 1;
+  visibility: visible;
+  position: relative; /* Change to relative when active */
+}
+
+.slider-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+  padding: 2rem;
+}
+
+.slider-text {
+  flex: 1;
+}
+
+.slider-text h1 {
+  color: white;
+  font-size: 6rem;
+  font-weight: bold;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.slider-steps {
+  flex: 1;
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-content {
+  text-align: center;
+}
+
+.step-content h3 {
+  color: #FFD700;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.step-image {
+  background: #FFD700;
+  border-radius: 50%;
+  padding: 1rem;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.step-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.image-wrapper {
+  width: 100%;
+  position: relative;
+  display: block;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slider-controls {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.slider-button {
+  background: #FFD700;
+  border: none;
+  color: black;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  transition: opacity 0.2s ease;
+}
+
+.slider-button:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+  .slider-text h1 {
+    font-size: 4rem;
+  }
+
+  .step-image {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider-container {
+    padding-top: 56px; /* Smaller navbar on mobile */
+  }
+
+  .slider-content {
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .slider-text h1 {
+    font-size: 3rem;
+  }
+
+  .slider-steps {
+    width: 100%;
+    min-height: 400px;
+  }
+
+  .step-image {
+    width: 200px;
+    height: 200px;
+  }
+
+  .slider-controls {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .slider-button {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+} 
