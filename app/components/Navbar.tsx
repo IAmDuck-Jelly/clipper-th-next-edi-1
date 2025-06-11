@@ -38,6 +38,7 @@ const Navbar: React.FC = () => {
           <Link href="/reusable" className="nav-link"># {t('nav.reusable' as const)}</Link>
           <Link href="/about" className="nav-link"># {t('nav.about' as const)}</Link>
           <Link href="/lighter" className="nav-link"># {t('nav.lighters' as const)}</Link>
+          <Link href="/shop" className="nav-link"># {t('nav.shop' as const)}</Link>
           <LanguageSwitcher />
         </div>
       </div>
