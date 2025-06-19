@@ -22,17 +22,20 @@ const Footer = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://n8n.masheduplab.com/webhook/61858d25-af82-4cab-bb1b-68bea4989e15', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      const data = await res.json();
-      if (data.success) {
-        setSubmitted(true);
-        setFormData({ name: '', email: '', message: '' });
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log('Server response:', data); // Log the server response
+setSubmitted(true);
+setFormData({ name: '', email: '', message: '' });
+console.log('Server response:', data); // Log the server response for debugging
       } else {
-        setError('Failed to send message: ' + (data.error || 'Unknown error'));
+        setError('Failed to send message: ' + (await res.text()) || 'Unknown error');
       }
     } catch (err) {
       setError('Failed to send message: ' + (err as Error).message);
@@ -131,4 +134,4 @@ const Footer = () => {
   );
 };
 
-export default Footer; 
+export default Footer;
