@@ -31,9 +31,8 @@ const Footer = () => {
       if (res.ok) {
         const data = await res.json();
         console.log('Server response:', data); // Log the server response
-setSubmitted(true);
-setFormData({ name: '', email: '', message: '' });
-console.log('Server response:', data); // Log the server response for debugging
+        setSubmitted(true);
+        setFormData({ name: '', email: '', message: '' });
       } else {
         setError('Failed to send message: ' + (await res.text()) || 'Unknown error');
       }
@@ -71,7 +70,7 @@ console.log('Server response:', data); // Log the server response for debugging
               <p>{t('footer.official' as const)}</p>
             </div>
           </div>
-          
+
           <div className="footer-right">
             <h3>{t('footer.contact' as const)}</h3>
             {error && (
@@ -85,36 +84,36 @@ console.log('Server response:', data); // Log the server response for debugging
                 ขอบคุณสำหรับการติดต่อเรา! / Thank you for contacting us!
               </div>
             ) : (
-            <form onSubmit={handleSubmit} className="contact-form">
-              <div className="form-row">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder={t('form.name' as const)}
-                  value={formData.name}
+              <form onSubmit={handleSubmit} className="contact-form">
+                <div className="form-row">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder={t('form.name' as const)}
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder={t('form.email' as const)}
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <textarea
+                  name="message"
+                  placeholder={t('form.message' as const)}
+                  value={formData.message}
                   onChange={handleChange}
                   required
                 />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder={t('form.email' as const)}
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <textarea
-                name="message"
-                placeholder={t('form.message' as const)}
-                value={formData.message}
-                onChange={handleChange}
-                required
-              />
-              <button type="submit" className="submit-button">
-                {t('form.send' as const)}
-              </button>
-            </form>
+                <button type="submit" className="submit-button">
+                  {t('form.send' as const)}
+                </button>
+              </form>
             )}
           </div>
         </div>

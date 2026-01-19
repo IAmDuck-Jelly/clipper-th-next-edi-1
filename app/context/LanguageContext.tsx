@@ -44,6 +44,8 @@ const baseEn: Record<string, string> = {
   'images.slider.2': '/images/en/clipper-lighter-home-slider1-2.webp',
   'images.slider.3': '/images/en/clipper-lighter-home-slider1-3.webp',
   'images.slider.4': '/images/en/clipper-lighter-home-slider1-4.webp',
+  'shop.wholesale': 'Wholesale Customers',
+  'shop.retail': 'Retail Customers',
 } as const;
 
 const translations: Record<Language, Record<string, string>> = {
@@ -88,6 +90,8 @@ const translations: Record<Language, Record<string, string>> = {
     'images.slider.2': '/images/th/clipper-banner-home-1-2-th.jpg',
     'images.slider.3': '/images/th/clipper-banner-home-1-3-th.jpg',
     'images.slider.4': '/images/th/clipper-banner-home-1-4-th.jpg',
+    'shop.wholesale': 'ลูกค้าขายส่ง',
+    'shop.retail': 'ลูกค้าปลีก',
   } as const,
 };
 
