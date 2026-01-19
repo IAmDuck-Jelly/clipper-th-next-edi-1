@@ -1,88 +1,63 @@
 .footer {
   background-color: #FFD700;
-  padding: 2rem 0;
-  width: 100%;
+  padding: 3rem 1rem 1rem;
+  color: black;
 }
 
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
 }
 
 .footer-content {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 2rem;
-  gap: 4rem;
-  min-height: 300px;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
 .footer-left {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
+  min-width: 300px;
 }
 
 .footer-right {
   flex: 1;
+  min-width: 300px;
   max-width: 500px;
-  align-self: center;
 }
 
 .logo-container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .footer-logo-image {
   object-fit: contain;
 }
 
-.distributor-text {
-  text-align: left;
-}
-
 .distributor-text p {
-  margin: 0.25rem 0;
+  margin: 0.5rem 0;
   font-weight: bold;
-  color: #000;
-  font-size: 1.1rem;
 }
 
 .footer-right h3 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #000;
+  font-weight: bold;
 }
 
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-}
-
-.form-row {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.form-row input {
-  flex: 1;
+  gap: 1rem;
 }
 
 .contact-form input,
 .contact-form textarea {
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  font-size: 0.875rem;
-  background: white;
+  border-radius: 8px;
   width: 100%;
 }
 
@@ -92,15 +67,15 @@
 }
 
 .submit-button {
-  background: #000;
+  background-color: black;
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 2rem;
   border: none;
-  border-radius: 4px;
-  font-size: 0.875rem;
+  border-radius: 8px;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  font-weight: bold;
   align-self: flex-start;
+  transition: opacity 0.2s;
 }
 
 .submit-button:hover {
@@ -108,105 +83,42 @@
 }
 
 .footer-bottom {
-  padding-top: 1.5rem;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .footer-links {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .footer-links a {
-  color: #000;
   text-decoration: none;
-  transition: opacity 0.2s ease;
-  font-size: 0.875rem;
+  color: black;
+  font-weight: 500;
 }
 
 .footer-links a:hover {
-  opacity: 0.7;
-}
-
-@media (max-width: 1024px) {
-  .footer-content {
-    gap: 2rem;
-  }
-
-  .footer-left, .footer-right {
-    flex: 1;
-  }
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
-  .footer {
-    padding: 2rem 1rem 1rem;
-  }
-
   .footer-content {
     flex-direction: column;
-    gap: 3rem;
-    min-height: auto;
-    text-align: center;
-  }
-
-  .footer-left {
-    align-items: center;
-    width: 100%;
-  }
-
-  .footer-right {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .logo-container {
-    justify-content: center;
-  }
-
-  .distributor-text {
-    text-align: center;
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .submit-button {
-    align-self: center;
-    width: 100%;
-    max-width: 200px;
   }
 
   .footer-bottom {
     flex-direction: column;
-    gap: 1rem;
     text-align: center;
-    padding-top: 2rem;
   }
 
   .footer-links {
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem 2rem;
   }
 }
-
-@media (max-width: 480px) {
-  .footer-left img {
-    width: 200px;
-    height: auto;
-  }
-
-  .distributor-text p {
-    font-size: 1rem;
-  }
-
-  .footer-links {
-    gap: 1rem;
-  }
-} 

@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '../context/LanguageContext';
+import { submitContactForm } from '../actions';
 import './Footer.css';
 
 const Footer = () => {
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
+    phone: '',
     email: '',
     message: '',
   });
@@ -21,23 +23,21 @@ const Footer = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    try {
-      const res = await fetch('https://n8n.masheduplab.com/webhook/61858d25-af82-4cab-bb1b-68bea4989e15', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
 
-      if (res.ok) {
-        const data = await res.json();
-        console.log('Server response:', data); // Log the server response
+    try {
+      console.log('Submitting form data:', formData);
+      const result = await submitContactForm(formData);
+      console.log('Server action result:', result);
+
+      if (result && result.success) {
         setSubmitted(true);
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', phone: '', email: '', message: '' });
       } else {
-        setError('Failed to send message: ' + (await res.text()) || 'Unknown error');
+        setError(result?.error || 'Failed to send message (No response from server)');
       }
-    } catch (err) {
-      setError('Failed to send message: ' + (err as Error).message);
+    } catch (err: any) {
+      console.error('Submission error:', err);
+      setError('An unexpected error occurred: ' + (err.message || String(err)));
     } finally {
       setLoading(false);
     }
@@ -85,24 +85,30 @@ const Footer = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="contact-form">
-                <div className="form-row">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder={t('form.name' as const)}
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder={t('form.email' as const)}
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder={t('form.name' as const)}
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder={t('form.phone' as const)}
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder={t('form.email' as const)}
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
                 <textarea
                   name="message"
                   placeholder={t('form.message' as const)}
@@ -125,7 +131,6 @@ const Footer = () => {
             <Link href="/legal">{t('footer.legal' as const)}</Link>
             <Link href="/notice">{t('footer.notice' as const)}</Link>
             <Link href="/cookies-policy">{t('footer.cookies' as const)}</Link>
-            <Link href="/contact">{t('footer.contact.link' as const)}</Link>
           </div>
         </div>
       </div>

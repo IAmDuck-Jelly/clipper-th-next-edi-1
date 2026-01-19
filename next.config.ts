@@ -4,7 +4,12 @@ const nextConfig: NextConfig = {
   output: "standalone",
   images: {
     formats: ['image/webp'],
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'yisvqdlpvftflntwzuhg.supabase.co',
+      },
+    ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
