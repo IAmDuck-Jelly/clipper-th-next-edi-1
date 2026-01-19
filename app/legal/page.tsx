@@ -25,7 +25,7 @@ export default function Legal() {
 
                 <h3>3. Limitation of Liability</h3>
                 <p>
-                    Uptown Trading Co., Ltd. allows access to this website on an "as is" basis. We make no warranties, expressed or implied,
+                    Uptown Trading Co., Ltd. allows access to this website on an &quot;as is&quot; basis. We make no warranties, expressed or implied,
                     regarding the accuracy, reliability, or availability of the website. In no event shall we be liable for any damages arising
                     out of the use or inability to use the materials on this website.
                 </p>

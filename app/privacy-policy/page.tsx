@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
                 <p><strong>Effective Date:</strong> January 1, 2025</p>
 
                 <p>
-                    <strong>Uptown Trading Co., Ltd.</strong> ("we", "our", or "us"), as the official distributor of Clipper products in Thailand,
+                    <strong>Uptown Trading Co., Ltd.</strong> (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;), as the official distributor of Clipper products in Thailand,
                     is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information
                     when you visit our website.
                 </p>

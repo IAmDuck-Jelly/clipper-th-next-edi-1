@@ -35,9 +35,10 @@ const Footer = () => {
       } else {
         setError(result?.error || 'Failed to send message (No response from server)');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Submission error:', err);
-      setError('An unexpected error occurred: ' + (err.message || String(err)));
+      const message = err instanceof Error ? err.message : String(err);
+      setError('An unexpected error occurred: ' + message);
     } finally {
       setLoading(false);
     }

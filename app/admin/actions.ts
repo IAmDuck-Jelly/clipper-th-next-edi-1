@@ -79,7 +79,7 @@ export async function deleteProduct(id: number, imageUrl: string) {
             }
         }
 
-        const { error, count } = await supabase
+        const { error } = await supabase
             .from('products')
             .delete()
             .eq('id', id)
