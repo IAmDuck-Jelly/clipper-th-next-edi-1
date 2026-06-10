@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import ProductCatalogue from '../../components/ProductCatalogue';
 import { useLanguage } from '../../context/LanguageContext';
-import { supabase } from '../../lib/supabase';
+import { staticProducts } from '../../lib/static-products';
 
 type Product = {
     id: number;
@@ -19,22 +19,17 @@ export default function WholesaleShopPage() {
 
     useEffect(() => {
         async function loadProducts() {
-            const { data } = await supabase
-                .from('products')
-                .select('*')
-                .eq('category', 'wholesale')
-                .order('sort_order', { ascending: true })
-                .order('id', { ascending: false });
+            try {
+                const response = await fetch('/api/products?type=wholesale');
+                const result = await response.json();
 
-            if (data) {
-                setProducts(data.map(p => ({
-                    id: p.id,
-                    name: p.name,
-                    image: p.image_url,
-                    price: p.price
-                })));
+                setProducts(result.products?.length ? result.products : staticProducts);
+            } catch (error) {
+                console.error('Failed to load wholesale products:', error);
+                setProducts(staticProducts);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         }
         loadProducts();
     }, []);

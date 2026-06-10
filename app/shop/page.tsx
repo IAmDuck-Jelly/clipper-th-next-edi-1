@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../context/LanguageContext';
-import { Package, ShoppingBag, ArrowLeft } from 'lucide-react';
+import { Gift, Package, ShoppingBag, ArrowLeft } from 'lucide-react';
 
 export default function ShopPage() {
   const { t } = useLanguage();
@@ -22,7 +22,7 @@ export default function ShopPage() {
           Select how you&apos;d like to browse the Clipper collection today.
         </p>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid md:grid-cols-3 gap-8 md:gap-10">
           {/* Wholesale Card */}
           <Link
             href="/shop/wholesale"
@@ -48,6 +48,20 @@ export default function ShopPage() {
             </div>
             <h2 className="text-4xl font-black text-black mb-4 uppercase">{t('shop.retail')}</h2>
             <p className="text-lg font-bold text-black/60">Individual pieces for your collection.</p>
+            <div className="mt-8 flex items-center gap-2 text-black font-black uppercase tracking-widest text-sm">
+              Enter Shop <ArrowLeft size={20} className="rotate-180" />
+            </div>
+          </Link>
+
+          <Link
+            href="/shop/giftset"
+            className="group relative flex flex-col items-center justify-center p-12 bg-white border-[8px] border-black rounded-[40px] shadow-[16px_16px_0_0_#22C55E] transition-all hover:-translate-y-2 hover:-translate-x-2 active:translate-x-0 active:translate-y-0"
+          >
+            <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-8 border-4 border-black group-hover:bg-green-500 transition-colors">
+              <Gift size={48} className="text-black group-hover:text-white transition-colors" />
+            </div>
+            <h2 className="text-4xl font-black text-black mb-4 uppercase">Gift Set</h2>
+            <p className="text-lg font-bold text-black/60">Curated Clipper sets.</p>
             <div className="mt-8 flex items-center gap-2 text-black font-black uppercase tracking-widest text-sm">
               Enter Shop <ArrowLeft size={20} className="rotate-180" />
             </div>

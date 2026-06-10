@@ -9,14 +9,18 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'yisvqdlpvftflntwzuhg.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'uptowntrading.co.th',
+      },
+      {
+        protocol: 'https',
+        hostname: 'highsostore.com',
+      },
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
-  devIndicators: {
-    buildActivity: false,
-    buildActivityPosition: 'bottom-right',
   },
 };
 

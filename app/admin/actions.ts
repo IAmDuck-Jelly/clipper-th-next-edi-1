@@ -1,6 +1,6 @@
 'use server';
 
-import { supabase } from '../lib/supabase';
+import { supabase, supabaseUrl } from '../lib/supabase';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
@@ -37,7 +37,7 @@ export async function addProduct(formData: FormData) {
         return { error: 'Image upload failed: ' + uploadError.message };
     }
 
-    const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
+    const imageUrl = `${supabaseUrl}/storage/v1/object/public/product-images/${fileName}`;
 
     // Insert Record
     const { error: dbError } = await supabase

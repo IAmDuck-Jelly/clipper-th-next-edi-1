@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import ProductCatalogue from '../../components/ProductCatalogue';
-import { useLanguage } from '../../context/LanguageContext';
 import { staticProducts } from '../../lib/static-products';
 
 type Product = {
@@ -12,20 +11,19 @@ type Product = {
     price: string;
 };
 
-export default function RetailShopPage() {
-    const { t } = useLanguage();
+export default function GiftSetShopPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function loadProducts() {
             try {
-                const response = await fetch('/api/products?type=retail');
+                const response = await fetch('/api/products?type=giftset');
                 const result = await response.json();
 
                 setProducts(result.products?.length ? result.products : staticProducts);
             } catch (error) {
-                console.error('Failed to load retail products:', error);
+                console.error('Failed to load gift set products:', error);
                 setProducts(staticProducts);
             } finally {
                 setLoading(false);
@@ -40,9 +38,9 @@ export default function RetailShopPage() {
 
     return (
         <ProductCatalogue
-            type="retail"
+            type="giftset"
             products={products}
-            title={`${t('shop.retail')} COLLECTION`}
+            title="GIFT SET COLLECTION"
         />
     );
 }
