@@ -5,7 +5,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '../context/LanguageContext';
 import { submitContactForm } from '../actions';
+import { z } from 'zod';
 import './Footer.css';
+
+const contactFormSchema = z.object({
+  name: z.string().min(1, 'Name is required').max(100),
+  phone: z.string().min(1, 'Phone is required').max(20),
+  email: z.string().email('Invalid email address'),
+  message: z.string().min(1, 'Message is required').max(2000),
+});
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -24,19 +32,23 @@ const Footer = () => {
     setLoading(true);
     setError(null);
 
+    const parsed = contactFormSchema.safeParse(formData);
+    if (!parsed.success) {
+      setError(parsed.error.errors[0].message);
+      setLoading(false);
+      return;
+    }
+
     try {
-      console.log('Submitting form data:', formData);
-      const result = await submitContactForm(formData);
-      console.log('Server action result:', result);
+      const result = await submitContactForm(parsed.data);
 
       if (result && result.success) {
         setSubmitted(true);
         setFormData({ name: '', phone: '', email: '', message: '' });
       } else {
-        setError(result?.error || 'Failed to send message (No response from server)');
+        setError(result?.error || 'Failed to send message');
       }
     } catch (err: unknown) {
-      console.error('Submission error:', err);
       const message = err instanceof Error ? err.message : String(err);
       setError('An unexpected error occurred: ' + message);
     } finally {
