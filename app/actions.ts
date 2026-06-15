@@ -53,7 +53,7 @@ function generateRecommendedReply(name: string, message: string): string {
 }
 
 async function sendConfirmationEmail(to: string, name: string, message: string) {
-    const resend = new Resend('re_HoARktpR_FmWPnaoqTWdrKv5ButcmCSCN');
+    const resend = new Resend(process.env.RESEND_API_KEY!);
 
     await resend.emails.send({
         from: 'Clipper Thailand <noreply@clipperthailand.com>',
@@ -134,7 +134,7 @@ export async function submitContactForm(data: { name: string; phone: string; ema
     }
 
     const { name, phone, email, message } = parsed.data;
-    const webhookUrl = 'https://discord.com/api/webhooks/1516099532205854751/0Xhx9UVRnHAwXR4Jw4a_dzNs2iPmdC0w3kVniwtx7tgjTBCaOVPB41aNlcbtTRUrFFqU';
+    const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 
     const recommendedReply = generateRecommendedReply(name, message);
 
