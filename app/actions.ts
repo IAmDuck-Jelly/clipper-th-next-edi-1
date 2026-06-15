@@ -10,48 +10,6 @@ const contactFormSchema = z.object({
     message: z.string().min(1, 'Message is required').max(2000),
 });
 
-function generateRecommendedReply(name: string, message: string): string {
-    const lower = message.toLowerCase();
-    const hasGreeting = /hello|hi|hey|good\s*(morning|afternoon|evening)/i.test(lower);
-    const isQuestion = /\?|what|how|when|where|can you|could you|do you/i.test(lower);
-    const hasUrgent = /urgent|asap|immediately|emergency|fast/i.test(lower);
-    const hasPrice = /price|cost|how much|quotation|quote|budget/i.test(lower);
-    const hasDelivery = /deliver|ship|receive|track|order status|when will/i.test(lower);
-    const hasComplaint = /problem|issue|broken|damage|not working|complaint|disappointed/i.test(lower);
-
-    let tone = '';
-    let body = '';
-    let closing = '';
-
-    if (hasComplaint) {
-        tone = `Dear ${name},`;
-        body = `Thank you for bringing this to our attention. We sincerely apologize for the inconvenience you've experienced. Your feedback is important to us, and we want to make this right.`;
-        closing = `We'd like to look into this further. Could you please provide us with your order number or any additional details? Our team will prioritize your case and get back to you within 24 hours.`;
-    } else if (hasPrice) {
-        tone = `Dear ${name},`;
-        body = `Thank you for your interest in our products! We'd be happy to provide you with pricing information.`;
-        closing = `Our sales team will prepare a detailed quotation for you and send it to your email within 24 hours. If you have specific products or quantities in mind, please let us know so we can provide the most accurate pricing.`;
-    } else if (hasDelivery) {
-        tone = `Dear ${name},`;
-        body = `Thank you for reaching out! We understand you'd like an update on your delivery.`;
-        closing = `Our logistics team will check the status and get back to you shortly. You can also track your order through the link sent to your email upon dispatch.`;
-    } else if (hasUrgent) {
-        tone = `Dear ${name},`;
-        body = `We've received your urgent request and understand the time sensitivity.`;
-        closing = `Our team is already looking into this and will respond within 2-4 hours. For immediate assistance, you can also reach us at our hotline.`;
-    } else if (isQuestion) {
-        tone = `Dear ${name},`;
-        body = `Thank you for your inquiry! We're happy to help answer your question.`;
-        closing = `Our team is reviewing your message and will provide a detailed response within 24 hours. If you need immediate assistance, please don't hesitate to call us.`;
-    } else {
-        tone = `Dear ${name},`;
-        body = `Thank you for contacting Clipper Thailand! We've received your message and appreciate you reaching out to us.`;
-        closing = `Our team will review your message and get back to you within 24 hours. We look forward to assisting you!`;
-    }
-
-    return `${tone}\n\n${body}\n\n${closing}`;
-}
-
 async function sendConfirmationEmail(to: string, name: string, message: string) {
     const resend = new Resend(process.env.RESEND_API_KEY!);
 
@@ -136,8 +94,6 @@ export async function submitContactForm(data: { name: string; phone: string; ema
     const { name, phone, email, message } = parsed.data;
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 
-    const recommendedReply = generateRecommendedReply(name, message);
-
     const embed = {
         title: '📩 New Contact Form Submission',
         color: 0x5865f2,
@@ -146,7 +102,6 @@ export async function submitContactForm(data: { name: string; phone: string; ema
             { name: '📧 Email', value: email, inline: true },
             { name: '📱 Phone', value: phone, inline: true },
             { name: '💬 Message', value: message.length > 1024 ? message.slice(0, 1021) + '...' : message },
-            { name: '✅ Recommended Reply', value: recommendedReply.length > 1024 ? recommendedReply.slice(0, 1021) + '...' : recommendedReply },
         ],
         timestamp: new Date().toISOString(),
         footer: { text: 'Clipper Thailand Contact Form' },
