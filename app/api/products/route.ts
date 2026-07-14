@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { staticProducts } from '../../lib/static-products';
-
-type ProductType = 'wholesale' | 'retail' | 'giftset';
+import {
+    applyProductOrder,
+    isProductType,
+    loadProductOrder,
+    ProductType,
+} from '../../lib/product-order';
 
 type WooProduct = {
     id: number;
@@ -32,9 +36,6 @@ const wholesaleProductsMovedToEnd = [
     'Clipper | Reusable Lighter Mini Tube Gold Gradient Edition - 24pcs./Box',
 ];
 
-function isProductType(value: string | null): value is ProductType {
-    return value === 'wholesale' || value === 'retail' || value === 'giftset';
-}
 
 function formatPrice(product: WooProduct) {
     const price = product.prices?.price;
@@ -164,19 +165,23 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: 'Invalid product type' }, { status: 400 });
     }
 
-    try {
-        const products = await fetchWooProducts(type);
+    let products: Product[];
+    let source: 'woocommerce' | 'static';
 
-        return NextResponse.json({
-            products: products.length > 0 ? products : staticProducts,
-            source: products.length > 0 ? 'woocommerce' : 'static',
-        });
+    try {
+        const wooProducts = await fetchWooProducts(type);
+        products = wooProducts.length > 0 ? wooProducts : staticProducts;
+        source = wooProducts.length > 0 ? 'woocommerce' : 'static';
     } catch (error) {
         console.error(`Failed to load ${type} WooCommerce products:`, error);
-
-        return NextResponse.json({
-            products: staticProducts,
-            source: 'static',
-        });
+        products = staticProducts;
+        source = 'static';
     }
+
+    const savedOrder = await loadProductOrder(type);
+
+    return NextResponse.json({
+        products: applyProductOrder(products, savedOrder),
+        source,
+    });
 }

@@ -1,124 +1,58 @@
 'use server';
 
-import { supabase, supabaseUrl } from '../lib/supabase';
-import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
+import { isProductType, writeProductOrder } from '../lib/product-order';
 
 function isAuthenticated(cookieStore: ReadonlyRequestCookies) {
     const session = cookieStore.get('admin_session');
     const password = process.env.ADMIN_PASSWORD;
-    return session?.value === password;
+    return Boolean(password) && session?.value === password;
 }
 
-export async function addProduct(formData: FormData) {
+type SaveProductOrderResult =
+    | { success: true }
+    | { success: false; error: string };
+
+export async function saveProductOrder(
+    section: string,
+    productIds: number[],
+): Promise<SaveProductOrderResult> {
     const cookieStore = await cookies();
     if (!isAuthenticated(cookieStore)) {
-        return { error: 'Unauthorized' };
+        return { success: false, error: 'Unauthorized' };
     }
 
-    const name = formData.get('name') as string;
-    const category = formData.get('category') as 'wholesale' | 'retail';
-    const image = formData.get('image') as File;
-
-    if (!name || !category || !image) {
-        return { error: 'Missing fields' };
+    if (!isProductType(section)) {
+        return { success: false, error: 'Invalid product section.' };
     }
-
-    // Upload Image
-    const fileExt = image.name.split('.').pop();
-    const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-
-    const { error: uploadError } = await supabase.storage
-        .from('product-images')
-        .upload(fileName, image);
-
-    if (uploadError) {
-        return { error: 'Image upload failed: ' + uploadError.message };
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+        return { success: false, error: 'At least one product is required.' };
     }
-
-    const imageUrl = `${supabaseUrl}/storage/v1/object/public/product-images/${fileName}`;
-
-    // Insert Record
-    const { error: dbError } = await supabase
-        .from('products')
-        .insert({
-            name,
-            price: '-',
-            category,
-            image_url: imageUrl,
-            // New products go to top (0) or bottom? Let's say top (0) is default. User can reorder.
-        });
-
-    if (dbError) {
-        return { error: 'Database insert failed: ' + dbError.message };
+    if (!productIds.every((id) => Number.isInteger(id) && id > 0)) {
+        return { success: false, error: 'Product IDs must be positive integers.' };
     }
-
-    revalidatePath('/shop/retail');
-    revalidatePath('/shop/wholesale');
-    revalidatePath('/admin');
-    return { success: true };
-}
-
-export async function deleteProduct(id: number, imageUrl: string) {
-    console.log('Attempting to delete product:', id);
-    const cookieStore = await cookies();
-    if (!isAuthenticated(cookieStore)) {
-        console.error('Delete failed: Unauthorized');
-        return { error: 'Unauthorized' };
+    if (new Set(productIds).size !== productIds.length) {
+        return { success: false, error: 'The product order contains duplicate IDs.' };
     }
 
     try {
-        // Delete Image (Optional cleanup)
-        if (imageUrl) {
-            const fileName = imageUrl.split('/').pop();
-            if (fileName) {
-                console.log('Deleting image:', fileName);
-                const { error: storageError } = await supabase.storage.from('product-images').remove([fileName]);
-                if (storageError) console.error('Image delete error:', storageError);
-            }
-        }
+        await writeProductOrder(section, productIds);
 
-        const { error } = await supabase
-            .from('products')
-            .delete()
-            .eq('id', id)
-            .select();
-
-        if (error) {
-            console.error('Database delete error:', error);
-            return { error: 'Delete failed: ' + error.message };
-        }
-
-        console.log('Product deleted successfully');
-
-        revalidatePath('/shop/retail');
-        revalidatePath('/shop/wholesale');
+        revalidatePath('/api/products');
+        revalidatePath(`/shop/${section}`);
         revalidatePath('/admin');
+        revalidatePath('/admin/sort');
+
         return { success: true };
-    } catch (e) {
-        console.error('Unexpected error in deleteProduct:', e);
-        return { error: 'Unexpected server error' };
+    } catch (error) {
+        console.error('Unexpected error in saveProductOrder:', error);
+        return {
+            success: false,
+            error: error instanceof Error
+                ? `Unable to save product order: ${error.message}`
+                : 'Unexpected server error while saving product order.',
+        };
     }
-}
-
-export async function updateProductOrder(id: number, newOrder: number) {
-    const cookieStore = await cookies();
-    if (!isAuthenticated(cookieStore)) {
-        return { error: 'Unauthorized' };
-    }
-
-    const { error } = await supabase
-        .from('products')
-        .update({ sort_order: newOrder })
-        .eq('id', id);
-
-    if (error) {
-        return { error: 'Update failed' };
-    }
-
-    revalidatePath('/shop/retail');
-    revalidatePath('/shop/wholesale');
-    revalidatePath('/admin');
-    return { success: true };
 }

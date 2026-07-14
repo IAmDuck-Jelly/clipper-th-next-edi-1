@@ -7,10 +7,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'yisvqdlpvftflntwzuhg.supabase.co',
-      },
-      {
-        protocol: 'https',
         hostname: 'uptowntrading.co.th',
       },
       {

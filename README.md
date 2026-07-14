@@ -16,6 +16,14 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+### Admin product ordering
+
+1. Copy `.env.example` to `.env.local` and set `ADMIN_PASSWORD`.
+2. Sign in at `/admin/login`; `/admin` opens the product-sorting page.
+3. Reorder Wholesale, Retail, or Gift Set products and select **Save Order**.
+
+Orders are stored independently in `data/product-order/*.json`; no external database is required. `PRODUCT_ORDER_DIRECTORY` can point to another writable directory. Production deployments must provide persistent writable storage—ephemeral or read-only serverless filesystems will not retain admin changes.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
